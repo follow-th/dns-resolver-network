@@ -1,0 +1,10 @@
+/dist/
+/bin/
+*.exe
+*.test
+*.out
+*.pem
+*.key
+.env
+.idea/
+.vscode/
