@@ -1,0 +1,25 @@
+# dns-resolver-network server configuration.
+# Every value can be overridden with a DRN_* environment variable
+# (DRN_LISTEN, DRN_TLS_CERT, DRN_TLS_KEY, DRN_CACHE_TTL, DRN_ASK_TIMEOUT,
+#  DRN_MAX_INFLIGHT_PER_AGENT, DRN_ALLOW, DRN_CLIENT_KEYS, DRN_AGENT_KEYS).
+
+listen: ":8080"
+
+# Optional TLS. Leave both empty when a reverse proxy terminates TLS.
+# tls_cert: /etc/drn/tls.crt
+# tls_key: /etc/drn/tls.key
+
+cache_ttl: 60s            # how long a merged answer is cached
+ask_timeout: 2s           # how long to wait for agents to answer
+max_inflight_per_agent: 64
+
+# Names clients may resolve. "*" allows every name, "*.example.com" matches
+# example.com and its subdomains, anything else matches exactly.
+allow:
+  - "*.example.com"
+
+# SHA-256 hashes of keys, created with `server keygen`. Never put plain keys here.
+client_keys:
+  - "0000000000000000000000000000000000000000000000000000000000000000"
+agent_keys:
+  - "1111111111111111111111111111111111111111111111111111111111111111"

@@ -1,0 +1,18 @@
+services:
+  server:
+    image: ghcr.io/follow-th/dns-resolver-network-server:latest
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./server.yaml:/etc/drn/server.yaml:ro
+    # Instead of the file, configuration can come from the environment:
+    # environment:
+    #   DRN_ALLOW: "*.example.com"
+    #   DRN_CLIENT_KEYS: "<sha256 hash from `server keygen`>"
+    #   DRN_AGENT_KEYS: "<sha256 hash from `server keygen`>"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"

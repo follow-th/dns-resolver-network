@@ -1,0 +1,21 @@
+# dns-resolver-network agent configuration.
+# Every value can be overridden with a DRN_* environment variable
+# (DRN_SERVER, DRN_KEY, DRN_NAME, DRN_DNS, DRN_IPV6).
+
+# Server address: a host name, or an https:// / wss:// URL.
+server: https://drn.example.com
+
+# The agent key printed by `server keygen` (the server config holds its hash).
+key: drn_replace_with_your_agent_key
+
+# Name shown in answers and /v1/agents. Defaults to the host name.
+name: agent-a
+
+# DNS servers to query, tried in order (UDP, then TCP when the answer is
+# truncated). Leave empty to use the system resolver.
+dns:
+  - 192.0.2.53
+  - 198.51.100.53
+
+# Also resolve AAAA records.
+ipv6: false

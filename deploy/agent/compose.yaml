@@ -1,0 +1,17 @@
+services:
+  agent:
+    image: ghcr.io/follow-th/dns-resolver-network-agent:latest
+    restart: unless-stopped
+    volumes:
+      - ./agent.yaml:/etc/drn/agent.yaml:ro
+    # Instead of the file, configuration can come from the environment:
+    # environment:
+    #   DRN_SERVER: "https://drn.example.com"
+    #   DRN_KEY: "<agent key from `server keygen`>"
+    #   DRN_NAME: "agent-a"
+    #   DRN_DNS: "192.0.2.53,198.51.100.53"
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
