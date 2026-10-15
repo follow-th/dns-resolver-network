@@ -2,6 +2,7 @@ services:
   agent:
     image: ghcr.io/follow-th/dns-resolver-network-agent:latest
     restart: unless-stopped
+    command: ["-config", "/etc/drn/agent.yaml"]
     volumes:
       - ./agent.yaml:/etc/drn/agent.yaml:ro
     # Instead of the file, configuration can come from the environment:

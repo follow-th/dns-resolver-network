@@ -2,6 +2,7 @@ services:
   server:
     image: ghcr.io/follow-th/dns-resolver-network-server:latest
     restart: unless-stopped
+    command: ["-config", "/etc/drn/server.yaml"]
     ports:
       - "8080:8080"
     volumes:

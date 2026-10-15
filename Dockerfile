@@ -19,8 +19,8 @@ LABEL org.opencontainers.image.source="https://github.com/follow-th/dns-resolver
 COPY --from=build /out/server /server
 USER nonroot:nonroot
 EXPOSE 8080
+# Configured by DRN_* environment variables; pass `-config <file>` (or set DRN_CONFIG) to read a YAML file.
 ENTRYPOINT ["/server"]
-CMD ["-config", "/etc/drn/server.yaml"]
 
 FROM gcr.io/distroless/static-debian12:nonroot AS agent
 LABEL org.opencontainers.image.source="https://github.com/follow-th/dns-resolver-network" \
@@ -28,5 +28,5 @@ LABEL org.opencontainers.image.source="https://github.com/follow-th/dns-resolver
       org.opencontainers.image.licenses="MIT"
 COPY --from=build /out/agent /agent
 USER nonroot:nonroot
+# Configured by DRN_* environment variables; pass `-config <file>` (or set DRN_CONFIG) to read a YAML file.
 ENTRYPOINT ["/agent"]
-CMD ["-config", "/etc/drn/agent.yaml"]
