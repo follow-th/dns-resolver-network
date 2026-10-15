@@ -226,8 +226,23 @@ func TestEndToEnd(t *testing.T) {
 	}
 
 	// The server drops every connection; the agents reconnect on their own.
+	dropped := time.Now()
 	e.srv.hub.CloseAll()
-	e.waitAgents(2)
+	deadline := time.Now().Add(5 * time.Second)
+	for {
+		list := e.srv.hub.List()
+		fresh := len(list) == 2
+		for _, a := range list {
+			fresh = fresh && a.ConnectedSince.After(dropped)
+		}
+		if fresh {
+			break
+		}
+		if time.Now().After(deadline) {
+			t.Fatalf("agents did not reconnect: %+v", list)
+		}
+		time.Sleep(10 * time.Millisecond)
+	}
 	code, body = e.resolve("after-reconnect.example.com")
 	agents = body["agents"].(map[string]any)
 	if code != 200 || agents["answered"] != 2.0 {
