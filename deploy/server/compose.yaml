@@ -2,16 +2,17 @@ services:
   server:
     image: ghcr.io/follow-th/dns-resolver-network-server:latest
     restart: unless-stopped
-    command: ["-config", "/etc/drn/server.yaml"]
     ports:
       - "8080:8080"
-    volumes:
-      - ./server.yaml:/etc/drn/server.yaml:ro
-    # Instead of the file, configuration can come from the environment:
-    # environment:
-    #   DRN_ALLOW: "*.example.com"
-    #   DRN_CLIENT_KEYS: "<sha256 hash from `server keygen`>"
-    #   DRN_AGENT_KEYS: "<sha256 hash from `server keygen`>"
+    environment:
+      DRN_ALLOW: "*"
+      # SHA-256 hashes from `server keygen`, comma separated.
+      DRN_CLIENT_KEYS: "<client key hash>"
+      DRN_AGENT_KEYS: "<agent key hash>"
+    # To use a YAML file instead, create server.yaml next to this file and uncomment:
+    # command: ["-config", "/etc/drn/server.yaml"]
+    # volumes:
+    #   - ./server.yaml:/etc/drn/server.yaml:ro
     logging:
       driver: json-file
       options:

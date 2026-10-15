@@ -2,15 +2,16 @@ services:
   agent:
     image: ghcr.io/follow-th/dns-resolver-network-agent:latest
     restart: unless-stopped
-    command: ["-config", "/etc/drn/agent.yaml"]
-    volumes:
-      - ./agent.yaml:/etc/drn/agent.yaml:ro
-    # Instead of the file, configuration can come from the environment:
-    # environment:
-    #   DRN_SERVER: "https://drn.example.com"
-    #   DRN_KEY: "<agent key from `server keygen`>"
-    #   DRN_NAME: "agent-a"
-    #   DRN_DNS: "192.0.2.53,198.51.100.53"
+    environment:
+      DRN_SERVER: "https://drn.example.com"
+      DRN_KEY: "<agent key from `server keygen`>"
+      DRN_NAME: "agent-a"
+      # DNS servers to ask, in order; empty uses the system resolver.
+      # DRN_DNS: "192.0.2.53,198.51.100.53"
+    # To use a YAML file instead, create agent.yaml next to this file and uncomment:
+    # command: ["-config", "/etc/drn/agent.yaml"]
+    # volumes:
+    #   - ./agent.yaml:/etc/drn/agent.yaml:ro
     logging:
       driver: json-file
       options:

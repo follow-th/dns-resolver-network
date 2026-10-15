@@ -28,8 +28,9 @@ client ── HTTPS GET /v1/resolve?host=example.com ──► server ── Web
 
    Give the **key** to the client or agent. Put only the **hash** in the server config.
 
-2. Server: copy `examples/server.yaml` and `deploy/server/compose.yaml` into one directory, set `allow`,
-   `client_keys` and `agent_keys`, then start it.
+2. Server: copy `deploy/server/compose.yaml`, set `DRN_ALLOW`, `DRN_CLIENT_KEYS` and `DRN_AGENT_KEYS`
+   (hashes, comma separated), then start it. A YAML file (`examples/server.yaml`) works too; see the comments
+   in the compose file.
 
    ```sh
    docker compose up -d
@@ -37,8 +38,8 @@ client ── HTTPS GET /v1/resolve?host=example.com ──► server ── Web
 
    Put a reverse proxy with TLS in front of port 8080, or set `tls_cert` and `tls_key`.
 
-3. Agent: copy `examples/agent.yaml` and `deploy/agent/compose.yaml` into one directory, set `server`, `key`
-   and `dns`, then start it.
+3. Agent: copy `deploy/agent/compose.yaml`, set `DRN_SERVER`, `DRN_KEY` (the plain key), `DRN_NAME` and
+   optionally `DRN_DNS`, then start it. A YAML file (`examples/agent.yaml`) works too.
 
    ```sh
    docker compose up -d
