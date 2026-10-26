@@ -15,17 +15,15 @@ jobs:
       matrix:
         package: [dns-resolver-network-server, dns-resolver-network-agent]
     steps:
-      # Remove untagged versions (for example the per-architecture manifests of old images).
-      - uses: actions/delete-package-versions@v5
+      # ghcr-cleanup-action understands image indexes: platform manifests and attestations
+      # referenced by a kept tag are never treated as untagged.
+      # latest and version tags (v1.2.3, 1.2.3, 1.2) are never deleted; of the other tagged
+      # images the newest 20 are kept; untagged images that no tag references are deleted.
+      - uses: dataaxiom/ghcr-cleanup-action@v1
         with:
-          package-name: ${{ matrix.package }}
-          package-type: container
-          min-versions-to-keep: 0
-          delete-only-untagged-versions: true
-      # Keep the newest 20 other versions; latest and version tags (v1.2.3, 1.2.3, 1.2) are never deleted.
-      - uses: actions/delete-package-versions@v5
-        with:
-          package-name: ${{ matrix.package }}
-          package-type: container
-          min-versions-to-keep: 20
-          ignore-versions: '^(latest|v?[0-9]+\.[0-9]+(\.[0-9]+)?.*)$'
+          package: ${{ matrix.package }}
+          use-regex: true
+          exclude-tags: '^(latest|v?[0-9]+\.[0-9]+(\.[0-9]+)?.*)$'
+          keep-n-tagged: 20
+          delete-untagged: true
+          validate: true
